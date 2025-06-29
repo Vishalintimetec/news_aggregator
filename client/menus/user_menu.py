@@ -1,5 +1,5 @@
 from datetime import datetime
-from clients.utils.date_utils import format_datetime
+from client.utils.date_utils import format_datetime
 
 def user_menu(username):
     print(f"\nWelcome to the News Application, {username}!")

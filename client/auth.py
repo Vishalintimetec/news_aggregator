@@ -1,7 +1,7 @@
-from client.api.api import APIClient
+from client.api.api import AuthAPI
 
 
-def signup(api: APIClient):
+def signup(api: AuthAPI):
     print("\n--- Sign Up ---")
     username = input("Username: ")
     email = input("Email: ")
@@ -17,7 +17,7 @@ def signup(api: APIClient):
         print(f" Error: {e}")
 
 
-def login(api: APIClient):
+def login(api: AuthAPI):
     print("\n--- Login ---")
     email = input("Email: ")
     password = input("Password: ")

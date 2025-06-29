@@ -6,7 +6,7 @@ class ExternalAPIRepository:
     def __init__(self):
         self.conn = get_db_connection()
 
-    def get_all_servers(self) -> List[dict]:
+    def  get_all_servers(self) -> List[dict]:
         cursor = self.conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM external_server")
         servers = cursor.fetchall()
