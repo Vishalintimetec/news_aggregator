@@ -1,20 +1,29 @@
 from server.repos.article_repo import ArticleRepository
-from server.repos.saved_repo import SavedArticleRepository
-
 
 class UserService:
     def __init__(self):
-        self.article_repo = ArticleRepository()
-        self.saved_repo = SavedArticleRepository()
+        self.repo = ArticleRepository()
 
-    def get_latest_headlines(self):
-        return self.article_repo.get_top_headlines()
+    def get_headlines_today(self, category):
+        return self.repo.fetch_headlines_by_day(category)
 
-    def get_saved_articles(self, user_id: int):
-        return self.saved_repo.get_by_user(user_id)
+    def get_headlines_in_date_range(self, start, end, category):
+        return self.repo.fetch_headlines_in_range(start, end, category)
 
-    def search_articles(self, query: str):
-        return self.article_repo.search_by_keyword(query)
+    def get_saved_articles(self, user_id):
+        return self.repo.fetch_saved_articles(user_id)
 
-    def logout(self, user_id: int):
+    def save_article(self, user_id, article_id):
+        return self.repo.insert_saved_article(user_id, article_id)
+
+    def delete_article(self, user_id, article_id):
+        return self.repo.remove_saved_article(user_id, article_id)
+
+    def search_articles(self, query, start, end, sort_by):
+        return self.repo.search_articles(query, start, end, sort_by)
+
+    def get_user_notifications(self, user_id):
+        return self.repo.fetch_notifications(user_id)
+
+    def logout(self, user_id):
         return {"message": f"User {user_id} logged out successfully."}

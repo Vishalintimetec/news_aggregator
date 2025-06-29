@@ -12,6 +12,6 @@ def get_all_external_servers(user=Depends(admin_required)):
 
 
 @router.put("/{server_id}")
-def update_server_details(server_id: int, server: ExternalServerUpdate, user= Depends(admin_required())):
+def update_server_details(server_id: int, server: ExternalServerUpdate, user= Depends(admin_required)):
     controller = ExternalServerController()
     return controller.update_server_details(server_id, server)
