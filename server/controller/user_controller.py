@@ -22,8 +22,5 @@ class UserController:
     def search_articles(self, query, start_date, end_date, sort_by):
         return self.service.search_articles(query, start_date, end_date, sort_by)
 
-    def get_notifications(self, user_id):
-        return self.service.get_user_notifications(user_id)
-
     def logout(self, user_id):
         return self.service.logout(user_id)

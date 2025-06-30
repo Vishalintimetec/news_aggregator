@@ -19,6 +19,25 @@ class CategoryRepo:
         conn.close()
         return self.find_category(category_name)
 
+    def get_category_by_name(self, name: str):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM category WHERE category_name = %s", (name,))
+        category = cursor.fetchone()
+        print("ccccccccccccccccc", category)
+        cursor.close()
+        conn.close()
+        return category
+
+    def insert_article_category(self, category_id, article_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("insert into article_category_mapping(category_id, article_id) values(%s,%s)",(category_id, article_id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+
     # def get_all(self):
     #     conn = get_db_connection()
     #     cursor = conn.cursor()
@@ -46,14 +65,7 @@ class CategoryRepo:
     #     conn.close()
     #     return result
     #
-    # def get_by_name(self, name: str):
-    #     conn = get_db_connection()
-    #     cursor = conn.cursor(dictionary=True)
-    #     cursor.execute("SELECT * FROM category WHERE category_name = %s", (name,))
-    #     category_id = cursor.fetchone()
-    #     cursor.close()
-    #     conn.close()
-    #     return category_id
+
     #
     # def update(self, category_id: int, name: str = None, description: str = None):
     #     conn = get_db_connection()
@@ -89,11 +101,4 @@ class CategoryRepo:
     #     conn.close()
     #     return True
     #
-    # def insert_article_category(self, category_id, article_id):
-    #     conn = get_db_connection()
-    #     cursor = conn.cursor()
-    #     cursor.execute("insert into article_category_mapping(category_id, article_id) values(%s,%s)",(category_id, article_id))
-    #     conn.commit()
-    #     cursor.close()
-    #     conn.close()
-    #
+

@@ -22,8 +22,5 @@ class UserService:
     def search_articles(self, query, start, end, sort_by):
         return self.repo.search_articles(query, start, end, sort_by)
 
-    def get_user_notifications(self, user_id):
-        return self.repo.fetch_notifications(user_id)
-
     def logout(self, user_id):
         return {"message": f"User {user_id} logged out successfully."}

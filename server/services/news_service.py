@@ -8,6 +8,7 @@ from server.utils.category_classifier import CategoryClassifier
 from server.services.newsapi_service import NewsAPIService
 from server.services.thenewsapi_service import TheNewsAPIService
 from server.services.api_manager import APIManager
+from server.services.notification_service import NotificationService
 
 class NewsService:
     def __init__(self):
@@ -17,6 +18,7 @@ class NewsService:
         self.classifier = CategoryClassifier()
         self.newsapi_service = NewsAPIService()
         self.thenewsapi_service = TheNewsAPIService()
+        self.notification_service = NotificationService()
 
     def get_active_api(self):
         return self.api_manager.get_active_api()
@@ -70,7 +72,7 @@ class NewsService:
             for category_name in article.categories:
                 print(category_name)
                 if category_name:
-                    category = self.category_repo.get_by_name(category_name)
+                    category = self.category_repo.get_category_by_name(category_name)
                     print("kkkkkkkkkkkkk",category)
 
                     if category:
@@ -85,7 +87,7 @@ class NewsService:
                         print(f"Mapped Article {article_id} to Category '{category_name}'")
 
             saved_count += 1
-
+        self.notification_service.generate_notifications_for_new_articles()
         print(f"{saved_count} articles stored from {active_api['server_name']}")
         return {
             "message": f"{saved_count} articles stored from {active_api['server_name']}",
