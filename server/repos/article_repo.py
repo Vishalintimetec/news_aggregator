@@ -68,4 +68,13 @@ class ArticleRepository:
         conn.close()
         return result
 
+    def hide_article(self, article_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+               UPDATE articles SET is_visible = FALSE WHERE article_id = %s
+           """, (article_id,))
+        conn.commit()
+        cursor.close()
+        conn.close()
 

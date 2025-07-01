@@ -6,3 +6,4 @@ SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 EMAIL_SENDER = "vishalreshama16092000@gmail.com"
 EMAIL_PASSWORD = "mgei swui cwau fuzn"
+REPORT_THRESHOLD = 3
