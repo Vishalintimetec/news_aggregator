@@ -81,3 +81,28 @@ class NotificationRepo:
         conn.commit()
         cursor.close()
         conn.close()
+
+    def get_unread_notifications_grouped_by_user(self):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+
+        cursor.execute("""
+            SELECT u.email, GROUP_CONCAT(n.message SEPARATOR '\n') AS messages, u.user_id
+            FROM notifications n
+            JOIN users u ON u.user_id = n.user_id
+            WHERE n.is_read = 0
+            GROUP BY u.user_id
+        """)
+        results = cursor.fetchall()
+
+        cursor.close()
+        conn.close()
+        return results
+
+    # def mark_all_notifications_as_read(self):
+    #     conn = get_db_connection()
+    #     cursor = conn.cursor()
+    #     cursor.execute("UPDATE notification SET is_read = 1 WHERE is_read = 0")
+    #     conn.commit()
+    #     cursor.close()
+    #     conn.close()

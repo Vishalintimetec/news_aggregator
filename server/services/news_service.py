@@ -10,6 +10,7 @@ from server.services.thenewsapi_service import TheNewsAPIService
 from server.services.api_manager import APIManager
 from server.services.notification_service import NotificationService
 
+
 class NewsService:
     def __init__(self):
         self.news_repo = NewsRepository()
@@ -19,6 +20,7 @@ class NewsService:
         self.newsapi_service = NewsAPIService()
         self.thenewsapi_service = TheNewsAPIService()
         self.notification_service = NotificationService()
+
 
     def get_active_api(self):
         return self.api_manager.get_active_api()
@@ -88,6 +90,7 @@ class NewsService:
 
             saved_count += 1
         self.notification_service.generate_notifications_for_new_articles()
+        self.notification_service.send_unread_notifications()
         print(f"{saved_count} articles stored from {active_api['server_name']}")
         return {
             "message": f"{saved_count} articles stored from {active_api['server_name']}",

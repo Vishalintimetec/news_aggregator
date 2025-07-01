@@ -1,11 +1,13 @@
 from server.repos.category_repo import CategoryRepo
 from server.repos.notification_repo import NotificationRepo
+from server.services.email_service import EmailService
 
 
 class NotificationService:
     def __init__(self):
         self.repo = NotificationRepo()
         self.category_repo = CategoryRepo()
+        self.email_service = EmailService()
 
     def create_preference(self, user_id, preference_data):
         print(preference_data.category)
@@ -26,3 +28,8 @@ class NotificationService:
     def generate_notifications_for_new_articles(self):
         self.repo.insert_notifications_for_new_articles()
         print("Notifications inserted based on new articles.")
+
+    def send_unread_notifications(self):
+        data = self.repo.get_unread_notifications_grouped_by_user()
+        for entry in data:
+            self.email_service.send_notification_email(entry['email'], entry['messages'])
