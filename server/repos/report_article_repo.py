@@ -3,11 +3,11 @@ from server.core.database_connection import get_db_connection
 
 class ReportManager:
 
-    def insert_report(self, article_id, user_id, reason):
+    def report_article(self, article_id, user_id, reason):
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("""
-            INSERT INTO reports (article_id, user_id, reason)
+            INSERT IGNORE INTO reports (article_id, user_id, reason)
             VALUES (%s, %s, %s)
         """, (article_id, user_id, reason))
         conn.commit()
@@ -25,4 +25,17 @@ class ReportManager:
         conn.close()
         return count
 
+    def get_reported_articles(self):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("""
+            SELECT article_id, count(*) as reported_count
+            from reports 
+            group by article_id
+            order by reported_count
+        """)
+        results = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return results
 

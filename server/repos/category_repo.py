@@ -37,6 +37,30 @@ class CategoryRepo:
         cursor.close()
         conn.close()
 
+    def update_visibility(self, category_id: int, is_visible: bool):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+            UPDATE category SET is_visible = %s WHERE category_id = %s
+        """, (is_visible, category_id))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return {"message": "Category visibility updated"}
+
+    def get_category_id_by_name(self, name: str):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT category_id FROM category WHERE category_name = %s", (name,))
+        result = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return result
+
+
+
+
+
 
     # def get_all(self):
     #     conn = get_db_connection()
@@ -56,14 +80,7 @@ class CategoryRepo:
     #     conn.close()
     #     return category
     #
-    # def get_id_by_name(self, name: str):
-    #     conn = get_db_connection()
-    #     cursor = conn.cursor(dictionary=True)
-    #     cursor.execute("SELECT category_id FROM category WHERE category_name = %s", (name,))
-    #     result = cursor.fetchone()
-    #     cursor.close()
-    #     conn.close()
-    #     return result
+
     #
 
     #

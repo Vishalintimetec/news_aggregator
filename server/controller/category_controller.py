@@ -7,7 +7,10 @@ from server.schemas.category import CategoryCreate
 
 class CategoryController:
     def __init__(self):
-        self.service = CategoryService()
+        self.category_service = CategoryService()
 
     def create_category(self, category: CategoryCreate):
-        return self.service.create_category(category.name)
+        return self.category_service.create_category(category.name)
+
+    def toggle_category_visibility(self, category_id: int, is_visible: bool):
+        return self.category_service.set_category_visibility(category_id, is_visible)

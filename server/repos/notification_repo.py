@@ -5,7 +5,7 @@ category_repo = CategoryRepo()
 class NotificationRepo:
 
     def insert_preference(self, user_id, preference_data):
-        category_id = category_repo.get_category_by_name(preference_data.category)["category_id"]
+        category_id = category_repo.get_category_id_by_name(preference_data.category)
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("""
@@ -40,7 +40,7 @@ class NotificationRepo:
         return preferences
 
     def update_preference(self, user_id, pref_id, data):
-        category_id = category_repo.get_category_by_name(data.category)["category_id"]
+        category_id = category_repo.get_category_id_by_name(data.category)
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
         cursor.execute("""

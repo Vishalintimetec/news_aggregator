@@ -3,10 +3,13 @@ from server.repos.category_repo import CategoryRepo
 
 class CategoryService:
     def __init__(self):
-        self.repo = CategoryRepo()
+        self.category_repo = CategoryRepo()
 
     def create_category(self, category_name):
-        existing = self.repo.find_category(category_name)
+        existing = self.category_repo.find_category(category_name)
         if existing:
             raise ValueError(f"Category '{category_name}' already exists")
-        return self.repo.create_category(category_name)
+        return self.category_repo.create_category(category_name)
+
+    def set_category_visibility(self, category_id: int, is_visible: bool):
+        return self.category_repo.update_visibility(category_id, is_visible)
