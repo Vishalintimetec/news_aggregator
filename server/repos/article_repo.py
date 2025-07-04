@@ -2,31 +2,19 @@ from server.core.database_connection import get_db_connection
 
 class ArticleRepository:
 
-    def fetch_headlines_by_day(self, category):
+    def fetch_headlines_by_day(self):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
 
-        if category:
-            cursor.execute("""
-                SELECT a.*
-                FROM articles a
-                JOIN article_category_mapping acm ON a.article_id = acm.article_id
-                JOIN category c ON acm.category_id = c.category_id
-                WHERE DATE(a.published_at) = CURDATE()
-                  AND c.category_name = %s
-                  AND c.is_visible = TRUE
-                  AND a.is_visible = TRUE
-            """, (category,))
-        else:
-            cursor.execute("""
-                SELECT a.*
-                FROM articles a
-                JOIN article_category_mapping acm ON a.article_id = acm.article_id
-                JOIN category c ON acm.category_id = c.category_id
-                WHERE DATE(a.published_at) = CURDATE()
-                  AND c.is_visible = TRUE
-                  AND a.is_visible = TRUE
-            """)
+        cursor.execute("""
+            SELECT a.*
+            FROM articles a
+            JOIN article_category_mapping acm ON a.article_id = acm.article_id
+            JOIN category c ON acm.category_id = c.category_id
+            WHERE DATE(a.published_at) = CURDATE()
+              AND c.is_visible = TRUE
+              AND a.is_visible = TRUE
+        """)
 
         result = cursor.fetchall()
         cursor.close()

@@ -16,7 +16,7 @@ class ReportService:
         if report_count >= REPORT_THRESHOLD:
             self.article_repo.hide_article(article_id)
 
-        if report_count == 1:
+        if report_count < REPORT_THRESHOLD:
             self.email_service.send_notification_email(
                 to_email="vickygaur237@gmail.com",
                 message=f"Article ID {article_id} was reported by User ID {user_id}.\nReason: {reason or 'No reason provided'}.\nTotal reports: {report_count}"

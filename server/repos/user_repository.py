@@ -1,6 +1,16 @@
 from server.core.database_connection import get_db_connection
 from server.utils.password_utils import hash_password
+
 class UserRepository:
+
+    def get_user_by_id(self, user_id: int):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT * FROM users WHERE user_id = %s", (user_id,))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return user
 
     def get_user_by_email(self, email: str):
         conn = get_db_connection()

@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from server.routes import auth_routes, news_routes, user_routes, external_server_routes, category_routes, \
-    user_notification_routes, article_routes
+    user_notification_routes, article_routes, blocked_keyword_routes
 
 app = FastAPI(
     title="News Aggregation",
@@ -14,6 +14,7 @@ app.include_router(external_server_routes.router)
 app.include_router(category_routes.router)
 app.include_router(user_notification_routes.router)
 app.include_router(article_routes.router)
+app.include_router(blocked_keyword_routes.router)
 
 
 @app.get("/")

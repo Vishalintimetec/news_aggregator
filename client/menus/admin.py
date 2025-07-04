@@ -1,6 +1,7 @@
 from client.menus.base import Menu
 from client.menus.hide_unhide import HideUnhideMenu
 # from client.menus.block_keyword import BlockKeywordMenu
+from datetime import datetime
 
 class AdminMenu(Menu):
     def display(self):
@@ -16,11 +17,23 @@ class AdminMenu(Menu):
             choice = input("Choose: ")
             if choice == "1":
                 resp = self.admin_api.get_external_servers()
-                print(resp.json())
+                servers = resp.json()
+                print("\nList of external servers:")
+                for server_id, server in enumerate(servers, 1):
+                    status = "Active" if server.get("is_active") else "Not Active"
+                    last_accessed = server.get("last_accessed", "")
+                    if last_accessed and "T" in last_accessed:
+                        last_accessed = last_accessed.split("T")[0]
+                        dt = datetime.strptime(last_accessed, "%Y-%m-%d")
+                        last_accessed = dt.strftime("%d %b %Y")
+                    print(f"{server_id}. {server.get('server_name', '')} - {status} - last accessed: {last_accessed}")
+
             elif choice == "2":
-                server_id = input("Enter server ID: ")
-                resp = self.admin_api.get_external_server_details(server_id)
-                print(resp.json())
+                response = self.admin_api.get_external_servers()
+                servers = response.json()
+                print("\nList of external server details:")
+                for idx, server in enumerate(servers, 1):
+                    print(f"{idx}. {server.get('server_name', '')} - {server.get('api_key', '<API KEY>')}")
             elif choice == "3":
                 server_id = input("Enter server ID: ")
                 api_key = input("Enter new API key: ")

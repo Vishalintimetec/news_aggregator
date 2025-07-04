@@ -4,8 +4,11 @@ class UserController:
     def __init__(self):
         self.service = UserService()
 
-    def get_today_headlines(self, category=None):
-        return self.service.get_headlines_today(category)
+    def get_current_user_info(self, user_id):
+        return self.service.get_user_by_id(user_id)
+
+    def get_today_headlines(self):
+        return self.service.get_headlines_today(user_id)
 
     def get_headlines_by_date_range(self, start_date, end_date, category=None):
         return self.service.get_headlines_in_date_range(start_date, end_date, category)

@@ -6,12 +6,17 @@ from typing import Optional
 router = APIRouter(prefix="/user", tags=["user"])
 controller = UserController()
 
+@router.get("/me")
+def get_me(user=Depends(get_current_user)):
+    return controller.get_current_user_info(user['user_id'])
+
 @router.get("/headlines/today")
-def get_today_headlines(category: Optional[str] = None):
-    return controller.get_today_headlines(category)
+def get_today_headlines(user=Depends(get_current_user)):
+    return controller.get_today_headlines(user['user_id'])
 
 @router.get("/headlines/date-range")
-def get_headlines_by_date_range(start_date: str = Query(...), end_date: str = Query(...), category: Optional[str] = None):
+def get_headlines_by_date_range(start_date: str = Query(...), end_date: str = Query(...),
+user=Depends(get_current_user), category: Optional[str] = None):
     return controller.get_headlines_by_date_range(start_date, end_date, category)
 
 @router.get("/saved_articles")
@@ -29,6 +34,14 @@ def delete_saved_article(article_id: int, user=Depends(get_current_user)):
 @router.get("/search")
 def search_articles(query: str, start_date: Optional[str] = None, end_date: Optional[str] = None, sort_by: Optional[str] = "likes"):
     return controller.search_articles(query, start_date, end_date, sort_by)
+
+@router.post("/like/{article_id}")
+def like_article(article_id: int, user=Depends(get_current_user)):
+    return controller.set_preference(user['user_id'], article_id, 'like')
+
+@router.post("/dislike/{article_id}")
+def dislike_article(article_id: int, user=Depends(get_current_user)):
+    return controller.set_preference(user['user_id'], article_id, 'dislike')
 
 @router.post("/logout")
 def logout(user=Depends(get_current_user)):

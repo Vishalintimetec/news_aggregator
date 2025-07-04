@@ -16,11 +16,11 @@ class HeadlinesMenu(Menu):
             print("Invalid choice.")
 
     def show_today_headlines(self):
-        print("1. All\n2. Business\n3. Entertainment\n4. Sports\n5. Technology")
-        cat_choice = input("Choose category: ")
-        categories = {"1": None, "2": "business", "3": "entertainment", "4": "sports", "5": "technology"}
-        category = categories.get(cat_choice)
-        resp = self.user_api.get_headlines_today(category=category)
+        # print("1. All\n2. Business\n3. Entertainment\n4. Sports\n5. Technology")
+        # cat_choice = input("Choose category: ")
+        # categories = {"1": None, "2": "business", "3": "entertainment", "4": "sports", "5": "technology"}
+        # category = categories.get(cat_choice)
+        resp = self.user_api.get_headlines_today()
         self.articles_action_menu(resp)
 
     def show_date_range_headlines(self):
