@@ -7,7 +7,7 @@ class ArticleRepository:
         cursor = conn.cursor(dictionary=True)
 
         cursor.execute("""
-            SELECT a.*
+            SELECT a.*, c.category_name
             FROM articles a
             JOIN article_category_mapping acm ON a.article_id = acm.article_id
             JOIN category c ON acm.category_id = c.category_id
@@ -27,7 +27,7 @@ class ArticleRepository:
 
         if category:
             cursor.execute("""
-                SELECT a.*
+                SELECT a.*, c.category_name
                 FROM articles a
                 JOIN article_category_mapping acm ON a.article_id = acm.article_id
                 JOIN category c ON acm.category_id = c.category_id
@@ -38,7 +38,7 @@ class ArticleRepository:
             """, (start, end, category))
         else:
             cursor.execute("""
-                SELECT a.*
+                SELECT a.*, c.category_name
                 FROM articles a
                 JOIN article_category_mapping acm ON a.article_id = acm.article_id
                 JOIN category c ON acm.category_id = c.category_id
@@ -93,7 +93,7 @@ class ArticleRepository:
         cursor = conn.cursor(dictionary=True)
 
         sql = """
-            SELECT DISTINCT a.*
+            SELECT DISTINCT a.*, c.category_name
             FROM articles a
             JOIN article_category_mapping acm ON a.article_id = acm.article_id
             JOIN category c ON acm.category_id = c.category_id

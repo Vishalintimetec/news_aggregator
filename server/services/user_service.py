@@ -50,31 +50,12 @@ class UserService:
         return self.personalize_articles(user_id, articles)
 
     def personalize_articles(self, user_id, articles):
-        prefs = self.personalization_repo.get_notification_preferences(user_id)
-        # liked = self.personalization_repo.get_liked_articles(user_id)
-        liked = self.personalization_repo.get_articles_by_preference(user_id, 'like')
-        disliked = self.personalization_repo.get_articles_by_preference(user_id, 'dislike')
-        saved = self.personalization_repo.get_saved_articles(user_id)
-        read = self.personalization_repo.get_read_history(user_id)
+        category_counts = self.personalization_repo.get_user_category_counts(user_id)
         personalized = []
         for article in articles:
             score = 0
-            enabled_categories = [cat for cat, enabled in (prefs or {}).items() if enabled and cat != 'keywords']
-            if article.get('category') in enabled_categories:
-                score += 2
-            keywords = (prefs.get('keywords') or []) if prefs else []
-            title = (article.get('title') or '').lower()
-            content = (article.get('content') or '').lower()
-            if any(kw.lower() in title or kw.lower() in content for kw in keywords):
-                score += 3
-            if article.get('article_id') in liked:
-                score += 2
-            if article.get('article_id') in disliked:
-                score -= 2
-            if article.get('article_id') in saved:
-                score += 1
-            if article.get('article_id') in read:
-                score += 1
+            category = article.get('category_name')
+            score += category_counts.get(category, 0) * 3
             personalized.append((score, article))
         personalized.sort(reverse=True, key=lambda x: x[0])
         return [a for score, a in personalized[:20]]
@@ -84,3 +65,5 @@ class UserService:
 
 
 
+us = UserService()
+us.personalize_articles()
