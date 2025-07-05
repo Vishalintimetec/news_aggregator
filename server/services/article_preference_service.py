@@ -4,5 +4,8 @@ class ArticlePreferenceService:
     def __init__(self):
         self.repo = ArticlePreferenceRepo()
 
-    def set_preference(self, user_id, article_id, preference):
-        return self.repo.set_preference(user_id, article_id, preference)
+    def like_article(self, user_id, article_id):
+        return self.repo.set_preference(user_id, article_id, 'like')
+
+    def dislike_article(self, user_id, article_id):
+        return self.repo.set_preference(user_id, article_id, 'dislike')

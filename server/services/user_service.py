@@ -63,7 +63,3 @@ class UserService:
     def logout(self, user_id):
         return {"message": f"User {user_id} logged out successfully."}
 
-
-
-us = UserService()
-us.personalize_articles()

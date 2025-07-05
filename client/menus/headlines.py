@@ -64,6 +64,9 @@ class HeadlinesMenu(Menu):
             print("1. Back")
             print("2. Logout")
             print("3. Save Article")
+            print("4. Like Article")
+            print("5. Dislike Article")
+            print("6. Mark as Read")
             action = input("Choose: ")
             if action == "1":
                 return  # Go back to previous menu
@@ -73,5 +76,17 @@ class HeadlinesMenu(Menu):
                 article_id = input("Enter Article ID to save: ")
                 save_resp = self.user_api.save_article(article_id)
                 print(save_resp.json())
+            elif action == "4":
+                article_id = input("Enter Article ID to like: ")
+                resp = self.user_api.like_article(article_id)
+                print(resp.json())
+            elif action == "5":
+                article_id = input("Enter Article ID to dislike: ")
+                resp = self.user_api.dislike_article(article_id)
+                print(resp.json())
+            elif action == "6":
+                article_id = input("Enter Article ID to mark as read: ")
+                resp = self.user_api.record_read(article_id)
+                print(resp.json())
             else:
                 print("Invalid choice.")

@@ -4,5 +4,8 @@ class ArticlePreferenceController:
     def __init__(self):
         self.service = ArticlePreferenceService()
 
-    def set_preference(self, user_id, article_id, preference):
-        return self.service.set_preference(user_id, article_id, preference)
+    def like_article(self, user_id, article_id):
+        return self.service.like_article(user_id, article_id)
+
+    def dislike_article(self, user_id, article_id):
+        return self.service.dislike_article(user_id, article_id)

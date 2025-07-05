@@ -49,3 +49,12 @@ class UserAPIClient(BaseAPIClient):
 
     def configure_notifications(self,  preference_id, config):
         return requests.put(f"{SERVER_URL}/preference/{preference_id}", headers=self._headers(), json=config)
+
+    def record_read(self, article_id):
+        return requests.post(f"{SERVER_URL}/user/read/{article_id}", headers=self._headers())
+
+    def like_article(self, article_id):
+        return requests.post(f"{SERVER_URL}/user/like/{article_id}", headers=self._headers())
+
+    def dislike_article(self, article_id):
+        return requests.post(f"{SERVER_URL}/user/dislike/{article_id}", headers=self._headers())

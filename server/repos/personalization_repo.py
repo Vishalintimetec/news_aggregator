@@ -17,7 +17,7 @@ class PersonalizationRepo:
                 UNION ALL
 
                 SELECT acm.category_id, COUNT(*) as cnt
-                FROM read_history rh
+                FROM user_article_view_history rh
                 JOIN article_category_mapping acm ON rh.article_id = acm.article_id
                 WHERE rh.user_id = %s
                 GROUP BY acm.category_id
