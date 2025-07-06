@@ -4,11 +4,11 @@ class BlockedKeywordController:
     def __init__(self):
         self.service = BlockedKeywordService()
 
-    def add_keyword(self, keyword):
-        return self.service.add_keyword(keyword)
+    def block_keyword(self, keyword):
+        return self.service.block_keyword(keyword)
 
-    def remove_keyword(self, keyword):
-        return self.service.remove_keyword(keyword)
+    def unblock_keyword(self, keyword):
+        return self.service.unblock_keyword(keyword)
 
     def get_all_keywords(self):
         return self.service.get_all_keywords()

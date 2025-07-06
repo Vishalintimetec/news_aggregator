@@ -7,7 +7,7 @@ class ArticlePreferenceRepo:
         # Upsert: if exists, update; else, insert
         cursor.execute(
             """
-            INSERT INTO article_preferences (user_id, article_id, preference)`
+            INSERT INTO article_preferences (user_id, article_id, preference)
             VALUES (%s, %s, %s)
             ON DUPLICATE KEY UPDATE preference = VALUES(preference)
             """,
@@ -16,4 +16,4 @@ class ArticlePreferenceRepo:
         conn.commit()
         cursor.close()
         conn.close()
-        return {"message": f"Article {preference}d."}
+        return {"message": f"Article with article_id {article_id} is {preference}d successfully."}

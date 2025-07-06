@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException
 from server.schemas.notification import NotificationPreferenceCreate, NotificationPreferenceOut, \
-    NotificationPrefrenceUpdate
+     BulkNotificationConfig
 from server.controller.user_notification_controller import NotificationController
 from server.core.jwt_utils import get_current_user
 from typing import List
@@ -16,9 +16,13 @@ def create_preference(preference: NotificationPreferenceCreate, user=Depends(get
 def get_preferences(user=Depends(get_current_user)):
     return controller.get_preferences(user["user_id"])
 
-@router.put("/preference/{preference_id}")
-def update_preference(preference_id: int, preference: NotificationPrefrenceUpdate, user=Depends(get_current_user)):
-    return controller.update_preference(user["user_id"], preference_id, preference)
+# @router.put("/preference/{preference_id}")
+# def update_preference(preference_id: int, preference: NotificationPrefrenceUpdate, user=Depends(get_current_user)):
+#     return controller.update_preference(user["user_id"], preference_id, preference)
+
+@router.post("/configure-notifications")
+def configure_notifications(config_data: BulkNotificationConfig, user=Depends(get_current_user)):
+    return controller.configure_notifications(user["user_id"], config_data)
 
 @router.delete("/preference/{preference_id}")
 def delete_preference(preference_id: int, user=Depends(get_current_user)):

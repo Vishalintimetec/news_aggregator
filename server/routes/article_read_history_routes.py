@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from server.controller.article_read_history_controller import ArticleReadHistoryController
 from server.core.jwt_utils import get_current_user
 
-router = APIRouter(prefix="/user", tags=["user"])
+router = APIRouter(prefix="/read-history", tags=["read-history"])
 controller = ArticleReadHistoryController()
 
 @router.post("/read/{article_id}")

@@ -1,6 +1,6 @@
 from client.menus.base import Menu
 from client.menus.hide_unhide import HideUnhideMenu
-# from client.menus.block_keyword import BlockKeywordMenu
+from client.menus.block_keywords import BlockKeywordMenu
 from datetime import datetime
 
 class AdminMenu(Menu):
@@ -45,8 +45,8 @@ class AdminMenu(Menu):
                 print(resp.json())
             elif choice == "5":
                 HideUnhideMenu(self.user_api, self.admin_api, self.session).display()
-            # elif choice == "6":
-            #     BlockKeywordMenu(self.user_api, self.admin_api, self.session).display()
+            elif choice == "6":
+                BlockKeywordMenu(self.user_api, self.admin_api, self.session).display()
             elif choice == "7":
                 break
             else:

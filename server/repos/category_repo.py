@@ -24,7 +24,6 @@ class CategoryRepo:
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT * FROM category WHERE category_name = %s", (name,))
         category = cursor.fetchone()
-        print("ccccccccccccccccc", category)
         cursor.close()
         conn.close()
         return category
@@ -37,7 +36,8 @@ class CategoryRepo:
         cursor.close()
         conn.close()
 
-    def update_visibility(self, category_id: int, is_visible: bool):
+    def update_category_visibility(self, category_id: int, is_visible):
+        print("*"*10,is_visible)
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("""
@@ -58,6 +58,14 @@ class CategoryRepo:
         return result
 
 
+    def get_all_categories(self):
+        conn = get_db_connection()
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT category_id, category_name FROM category")
+        categories = cursor.fetchall()
+        cursor.close()
+        conn.close()
+        return categories
 
 
 

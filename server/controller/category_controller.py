@@ -12,5 +12,8 @@ class CategoryController:
     def create_category(self, category: CategoryCreate):
         return self.category_service.create_category(category.name)
 
-    def toggle_category_visibility(self, category_id: int, is_visible: bool):
+    def toggle_category_visibility(self, category_id: int, is_visible):
         return self.category_service.set_category_visibility(category_id, is_visible)
+
+    def get_all_categories(self):
+        return self.category_service.get_all_categories()

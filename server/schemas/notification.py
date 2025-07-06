@@ -1,13 +1,19 @@
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, List
 
 class NotificationPreferenceCreate(BaseModel):
     category: str
     keyword: Optional[str]
 
-class NotificationPrefrenceUpdate(NotificationPreferenceCreate):
+class NotificationConfigItem(BaseModel):
+    category_name: str
+    category_id: int
     is_enabled: bool
+    keywords: List[str]
 
 class NotificationPreferenceOut(NotificationPreferenceCreate):
     id: int
     user_id: int
+
+class BulkNotificationConfig(BaseModel):
+    configurations: List[NotificationConfigItem]

@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from server.controller.article_preference_controller import ArticlePreferenceController
 from server.core.jwt_utils import get_current_user
 
-router = APIRouter(prefix="/user", tags=["user"])
+router = APIRouter(prefix="/preferences", tags=["preferences"])
 controller = ArticlePreferenceController()
 
 @router.post("/like/{article_id}")

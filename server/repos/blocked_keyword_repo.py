@@ -1,7 +1,7 @@
 from server.core.database_connection import get_db_connection
 
 class BlockedKeywordRepo:
-    def add_keyword(self, keyword):
+    def block_keyword(self, keyword):
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("INSERT IGNORE INTO blocked_keywords (keyword) VALUES (%s)", (keyword,))
@@ -10,7 +10,7 @@ class BlockedKeywordRepo:
         conn.close()
         return {"message": "Keyword blocked."}
 
-    def remove_keyword(self, keyword):
+    def unblock_keyword(self, keyword):
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute("DELETE FROM blocked_keywords WHERE keyword = %s", (keyword,))

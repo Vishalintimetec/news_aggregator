@@ -125,5 +125,16 @@ class ArticleRepository:
         conn.commit()
         cursor.close()
         conn.close()
-        return {"message": "Article hidden."}
+        return {"message": f"Article with article_id {article_id} is hidden successfully."}
+
+    def unhide_article(self, article_id):
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("""
+               UPDATE articles SET is_visible = TRUE WHERE article_id = %s
+           """, (article_id,))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return {"message": f"Article with article_id {article_id} is unhidden successfully."}
 

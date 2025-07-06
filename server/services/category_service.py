@@ -11,5 +11,8 @@ class CategoryService:
             raise ValueError(f"Category '{category_name}' already exists")
         return self.category_repo.create_category(category_name)
 
-    def set_category_visibility(self, category_id: int, is_visible: bool):
-        return self.category_repo.update_visibility(category_id, is_visible)
+    def set_category_visibility(self, category_id: int, is_visible):
+        return self.category_repo.update_category_visibility(category_id, is_visible)
+
+    def get_all_categories(self):
+        return self.category_repo.get_all_categories()

@@ -5,7 +5,7 @@ class ReadHistoryRepo:
         conn = get_db_connection()
         cursor = conn.cursor()
         cursor.execute(
-            "INSERT IGNORE INTO read_history (user_id, article_id) VALUES (%s, %s)",
+            "INSERT IGNORE INTO user_article_view_history (user_id, article_id) VALUES (%s, %s)",
             (user_id, article_id)
         )
         conn.commit()
@@ -16,7 +16,7 @@ class ReadHistoryRepo:
     def get_read_history(self, user_id):
         conn = get_db_connection()
         cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT article_id FROM read_history WHERE user_id = %s", (user_id,))
+        cursor.execute("SELECT article_id FROM user_article_view_history WHERE user_id = %s", (user_id,))
         read = [row["article_id"] for row in cursor.fetchall()]
         cursor.close()
         conn.close()

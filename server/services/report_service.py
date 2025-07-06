@@ -30,4 +30,7 @@ class ReportService:
     def hide_article(self, article_id):
         return self.article_repo.hide_article(article_id)
 
+    def unhide_article(self, article_id):
+        return self.article_repo.unhide_article(article_id)
+
 
