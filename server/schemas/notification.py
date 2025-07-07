@@ -11,9 +11,10 @@ class NotificationConfigItem(BaseModel):
     is_enabled: bool
     keywords: List[str]
 
-class NotificationPreferenceOut(NotificationPreferenceCreate):
-    id: int
-    user_id: int
 
 class BulkNotificationConfig(BaseModel):
     configurations: List[NotificationConfigItem]
+
+class NotificationPreferenceOut(NotificationPreferenceCreate):
+    id: int
+    user_id: int

@@ -1,26 +1,20 @@
 from server.core.database_connection import get_db_connection
 from server.schemas.external_servers import ExternalServerUpdate
 from datetime import datetime
-
+from server.core.db_context import get_db_cursor
 
 class ExternalServerRepository:
     def get_all_servers(self):
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM external_server ORDER BY server_id")
-        servers = cursor.fetchall()
-        cursor.close()
-        conn.close()
-        return servers
+        with get_db_cursor(dictionary=True) as (conn, cursor):
+            cursor.execute("SELECT * FROM external_server ORDER BY server_id")
+            servers = cursor.fetchall()
+            return servers
 
     def get_server_by_id(self, server_id: int):
-        conn = get_db_connection()
-        cursor = conn.cursor(dictionary=True)
-        cursor.execute("SELECT * FROM external_server WHERE server_id = %s", (server_id,))
-        server = cursor.fetchone()
-        cursor.close()
-        conn.close()
-        return server
+        with get_db_cursor(dictionary=True) as (conn, cursor):
+            cursor.execute("SELECT * FROM external_server WHERE server_id = %s", (server_id,))
+            server = cursor.fetchone()
+            return server
     #
     # def create(self, server: ExternalServerCreate):
     #     conn = DbConnection.get_db_connection()
@@ -36,40 +30,20 @@ class ExternalServerRepository:
     #     return self.get_by_id(server_id)
     #
     def update_server_details(self, server_id: int, server: ExternalServerUpdate):
-        conn = get_db_connection()
-        cursor = conn.cursor()
-
-        update_fields = []
-        values = []
-
-        if server.server_name is not None:
-            update_fields.append("server_name = %s")
-            values.append(server.server_name)
-
-        if server.api_key is not None:
-            update_fields.append("api_key = %s")
-            values.append(server.api_key)
-
-        if server.base_url is not None:
-            update_fields.append("base_url = %s")
-            values.append(server.base_url)
-
-        if server.is_active is not None:
-            update_fields.append("is_active = %s")
-            values.append(server.is_active)
-
-        if update_fields:
-            update_fields.append("last_accessed = %s")
-            values.append(datetime.now())
-            values.append(server_id)
-
-            query = f"UPDATE external_servers SET {', '.join(update_fields)} WHERE server_id = %s"
-            cursor.execute(query, values)
-            conn.commit()
-
-        cursor.close()
-        conn.close()
-        return self.get_server_by_id(server_id)
+        with get_db_cursor() as (conn, cursor):
+            update_fields = []
+            values = []
+            if server.api_key is not None:
+                update_fields.append("api_key = %s")
+                values.append(server.api_key)
+            if update_fields:
+                update_fields.append("last_accessed = %s")
+                values.append(datetime.now())
+                values.append(server_id)
+                query = f"UPDATE external_server SET {', '.join(update_fields)} WHERE server_id = %s"
+                cursor.execute(query, values)
+                conn.commit()
+            return {"message": f"Server with ID {server_id} updated successfully"}
 
     # def delete(self, server_id: int):
     #     conn = DbConnection.get_db_connection()

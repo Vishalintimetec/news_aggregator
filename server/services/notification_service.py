@@ -1,6 +1,7 @@
 from server.repos.category_repo import CategoryRepo
 from server.repos.notification_repo import NotificationRepo
 from server.services.email_service import EmailService
+from server.Exceptions.notification_exceptions import NotificationNotFoundException
 
 
 class NotificationService:
@@ -10,35 +11,23 @@ class NotificationService:
         self.email_service = EmailService()
 
     def create_preference(self, user_id, preference_data):
-        print(preference_data.category)
-        # category_id = self.category_repo.get_category_by_name(preference_data.category)["category_id"]
-        # print(category_id)
         return self.repo.insert_preference(user_id, preference_data)
 
     def get_preferences(self, user_id):
-        return self.repo.get_preferences_by_user(user_id)
+        prefs = self.repo.get_preferences_by_user(user_id)
+        if not prefs:
+            raise NotificationNotFoundException(f"No notification preferences found for user {user_id}")
+        return prefs
 
-    # def update_preference(self, user_id, preference_id, preference_data):
-    #     return self.repo.update_preference(user_id, preference_id, preference_data)
-
-    # services/user_service.py
     def configure_notifications(self, user_id, config_data):
-        # Clear existing preferences for this user
-        # self.repo.clear_user_preferences(user_id)
+        return self.repo.configure_notifications(user_id, [c.dict() for c in config_data.configurations])
 
-        # Create new preferences based on configuration
-        results = []
-        for config in config_data.configurations:
-            if config.enabled:
-                for keyword in config.keywords:
-                    preference_data = type('obj', (object,), {
-                        'category': config.category,
-                        'keyword': keyword if keyword != 'all' else None
-                    })
-                    result = self.repo.insert_preference(user_id, preference_data)
-                    results.append(result)
-
-        return {"message": f"Notification preferences configured successfully. {len(results)} preferences created."}
+    def get_unread_notifications(self, user_id):
+        unread_articles = self.repo.get_unread_notifications(user_id)
+        if not unread_articles:
+            raise NotificationNotFoundException(f"No unread notifications found for user {user_id}")
+        self.repo.mark_notification_as_read(user_id)
+        return unread_articles
 
     def delete_preference(self, user_id, preference_id):
         return self.repo.delete_preference(user_id, preference_id)
