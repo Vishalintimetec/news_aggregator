@@ -1,23 +1,12 @@
-from client.api.api import APIClient
-from auth import signup, login
-from client.menu import main_menu, show_menu_by_role
-
-def main():
-    api = APIClient()
-    while True:
-        choice = main_menu()
-        if choice == "1":
-            if login(api):
-                show_menu_by_role(api)
-                break
-        elif choice == "2":
-            signup(api)
-            break
-        elif choice == "3":
-            print("Exiting application.")
-            break
-        else:
-            print("Invalid choice.")
+from client.api.user import UserAPIClient
+from client.api.admin import AdminAPIClient
+from client.session import Session
+from client.menus.home import HomeMenu
 
 if __name__ == "__main__":
-    main()
+    user_api = UserAPIClient()
+    admin_api = AdminAPIClient()
+    session = Session()
+    HomeMenu(user_api, admin_api, session).display()
+
+    

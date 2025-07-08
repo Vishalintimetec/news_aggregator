@@ -7,5 +7,5 @@ class UserCredentials(BaseModel):
 
 class TokenResponse(BaseModel):
     access_token: str
-    token_type: str
-    user_role: str
+    token_type: str = "bearer"
+    role: str

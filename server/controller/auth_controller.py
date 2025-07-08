@@ -1,12 +1,18 @@
-from server.services.authentication_service import AuthService
+from fastapi import HTTPException
 
-class AuthenticationController:
+from server.config.http_status_codes import HTTP_BAD_REQUEST
+from server.services.authentication_service import AuthenticationService
+from server.schemas.user import UserCreate
+from server.schemas.auth import UserCredentials
 
+
+class AuthController:
     def __init__(self):
-        self.authentication_service = AuthService()
+        self.auth_service = AuthenticationService()
 
-    def register(self, body):
-        return self.authentication_service.register_user(body)
+    def login(self, user_data: UserCredentials):
+        return self.auth_service.login(user_data)
 
-    def login(self, body):
-        return self.authentication_service.login(body)
+    def register(self, user: UserCreate):
+        db_user = self.auth_service.register_user(user)
+        return db_user
